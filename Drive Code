@@ -1,0 +1,98 @@
+package frc.robot;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
+public class Robot extends IterativeRobot {
+ //Essentials Do Not Change
+ String sides;
+    
+ DifferentialDrive myRobot;
+ 
+ //Values For Driving
+ double motorXValue;
+ double motorYValue;
+ double iterationY;
+ double iterationX;
+ double absYValue;
+
+ //Announcing Controller
+ XboxController controller;
+
+ //Talons
+ Talon driveMotor_1 = new Talon(1);
+ Talon driveMotor_2 = new Talon(2);
+ Talon conveyer = new Talon(3);
+ Talon intake = new Talon(4);
+ Talon shoot = new Talon(5);
+ Talon arm = new Talon(6);
+
+  @Override
+  public void robotInit() {
+
+  }
+
+  @Override
+  public void robotPeriodic() {
+  }
+
+
+  @Override
+  public void autonomousInit() {
+
+  }
+
+
+  @Override
+  public void autonomousPeriodic() {
+  
+  }
+
+
+
+
+
+  @Override
+  public void testPeriodic() {
+  }
+  
+  @Override
+  public void teleopPeriodic() {
+      
+      //Drive Code
+      if (controller.getY(Hand.kLeft) != 0) {
+    
+    iterationY = iterationY + 0.2;
+    absYValue = Math.abs(controller.getY(Hand.kLeft));
+    motorYValue = (absYValue)/(1+((absYValue-(0.001))/(0.001))*(Math.pow(2.8, (-(0.5)*(iterationY)))));
+    
+    if(controller.getY(Hand.kLeft) < 0) motorYValue = -(motorYValue);
+    
+  } else {
+    
+    motorYValue = 0;
+    iterationY = 0;
+    absYValue = 0;
+  
+  }
+  
+  motorXValue = controller.getX(Hand.kLeft) * .99;
+  
+  }
+}
